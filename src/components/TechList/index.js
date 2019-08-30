@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 export default function TechList() {
 
@@ -10,6 +10,17 @@ export default function TechList() {
     setTech([...techs, newTech])
     setNewTech('')
   }
+
+  useEffect(() => {
+    const storageTechs = localStorage.getItem('techs')
+    if(storageTechs) {
+      setTech(JSON.parse(storageTechs))
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('techs', JSON.stringify(techs))
+  }, [techs])
 
   return (
     <div data-testid="container">
