@@ -1,7 +1,8 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-import { useSelector } from 'react-redux'
+import { render, fireEvent } from '@testing-library/react';
+import { useSelector, useDispatch } from 'react-redux'
 import TechListRedux from '../../components/TechListRedux';
+import { addTech } from '../../redux/actions/tech';
 
 jest.mock('react-redux')
 
@@ -17,5 +18,21 @@ describe('TechListRedux component', () => {
 
     expect(list).toContainElement(getByText('React'))
     expect(list).toContainElement(getByText('React Native'))
+  })
+
+  it('should be able to add new tech', () => {
+    const { getByTestId } = render(<TechListRedux />)
+    const form = getByTestId('form')
+    const techInput = getByTestId('tech-input')
+
+    const dispatch = jest.fn();
+
+    useDispatch.mockReturnValue(dispatch);
+
+    fireEvent.change(techInput, { target: { value: 'Node.js' }})
+    fireEvent.submit(form)
+
+
+    expect(dispatch).toHaveBeenCalledWith(addTech('Node.js'))
   })
 })

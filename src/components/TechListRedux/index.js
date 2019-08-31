@@ -1,28 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-
+import { addTech } from '../../redux/actions/tech';
 export default function TechListRedux() {
 
   const [newTech, setNewTech] = useState('')
-  const techs = useSelector(state => state.techs)
   const dispatch = useDispatch()
+  const techs = useSelector(state => state.techs)
 
   function handleAddTech(event) {
     event.preventDefault()
-    dispatch({ type: 'ADD_TECH', payload: { techs: newTech } })
+    dispatch(addTech(newTech))
     setNewTech('')
   }
-
-  useEffect(() => {
-    const storageTechs = localStorage.getItem('techs')
-    if(storageTechs) {
-      setTech(JSON.parse(storageTechs))
-    }
-  }, [])
-
-  useEffect(() => {
-    localStorage.setItem('techs', JSON.stringify(techs))
-  }, [techs])
 
   return (
     <div data-testid="container">
